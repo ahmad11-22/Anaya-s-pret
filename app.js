@@ -1,30 +1,18 @@
-// 1. FIREBASE SDK IMPORTS (Added Auth Imports)
+// 1. FIREBASE SDK IMPORTS 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 2. UI FUNCTIONS & MODAL CONTROLS
-window.openAdmin = function() { 
-    document.getElementById('admin-modal').style.display = 'flex'; 
-    renderAdminInventory();
-}
-window.closeAdmin = function() { document.getElementById('admin-modal').style.display = 'none'; }
-
-window.openLogin = function() { document.getElementById('login-modal').style.display = 'flex'; }
-window.closeLogin = function() { 
-    document.getElementById('login-modal').style.display = 'none'; 
-    document.getElementById('login-error').style.display = 'none';
-}
-
+// 2. UI FUNCTIONS 
 window.changeMainImage = function(imgSrc, thumbElement) {
     document.getElementById('main-product-image').src = imgSrc;
     document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active-thumb'));
     thumbElement.classList.add('active-thumb');
 }
 
-// 3. FIREBASE CONFIGURATION
+// 3. FIREBASE CONFIGURATION (Fixed typo from Ds511 to DxS11)
 const firebaseConfig = {
-  apiKey: "AIzaSyDs511IYmXCZmlLYhHWn6AKfDrp6XANSFU",
+  apiKey: "AIzaSyDxS11IYmXCZml1YHhWn6AKfDrp6XANSFU",
   authDomain: "anaya-s-pret.firebaseapp.com",
   projectId: "anaya-s-pret",
   storageBucket: "anaya-s-pret.firebasestorage.app",
@@ -34,7 +22,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app); // Initialize Authentication
+const auth = getAuth(app); 
 
 const myWhatsAppNumber = "923369871030"; 
 
@@ -44,16 +32,20 @@ let currentFilter = 'All';
 // 4. START THE APP
 async function startApp() {
     await fetchProductsFromCloud();
+    setupAuthListener(); // Start listening for logins
     
     if(document.getElementById('product-grid')) {
         renderProducts();
         setupFilters();
-        setupFileUploadFeedback();
-        setupAuthListener(); // Start listening for logins
-        setupLoginLogic();   // Turn on the login form
     }
     if(document.getElementById('product-detail-container')) {
         renderProductDetails();
+    }
+    // Setup Admin Page specifically
+    if(document.getElementById('admin-login-screen')) {
+        setupLoginLogic();
+        setupFileUploadFeedback();
+        renderAdminInventory();
     }
 }
 startApp();
@@ -63,20 +55,25 @@ startApp();
 // Listen for Login/Logout changes
 function setupAuthListener() {
     onAuthStateChanged(auth, (user) => {
-        const loginBtn = document.getElementById('login-btn');
-        const adminBtn = document.getElementById('admin-btn');
-        const logoutBtn = document.getElementById('logout-btn');
+        // Only run UI flipping if we are on the admin page
+        const isAdminPage = window.location.pathname.includes('admin.html');
+        
+        if (isAdminPage) {
+            const loginScreen = document.getElementById('admin-login-screen');
+            const dashboard = document.getElementById('admin-dashboard');
+            const logoutBtn = document.getElementById('logout-btn');
 
-        if (user) {
-            // User IS logged in: Show Admin & Logout, Hide Login
-            loginBtn.style.display = 'none';
-            adminBtn.style.display = 'inline-flex';
-            logoutBtn.style.display = 'inline-flex';
-        } else {
-            // User IS NOT logged in: Show Login, Hide Admin & Logout
-            loginBtn.style.display = 'inline-flex';
-            adminBtn.style.display = 'none';
-            logoutBtn.style.display = 'none';
+            if (user) {
+                // User IS logged in: Hide Login, Show Dashboard & Logout
+                if(loginScreen) loginScreen.style.display = 'none';
+                if(dashboard) dashboard.style.display = 'block';
+                if(logoutBtn) logoutBtn.style.display = 'inline-flex';
+            } else {
+                // User IS NOT logged in: Show Login, Hide Dashboard & Logout
+                if(loginScreen) loginScreen.style.display = 'block';
+                if(dashboard) dashboard.style.display = 'none';
+                if(logoutBtn) logoutBtn.style.display = 'none';
+            }
         }
     });
 }
@@ -96,9 +93,7 @@ function setupLoginLogic() {
             submitBtn.innerText = "Verifying...";
 
             try {
-                // Tell Firebase to check the password
                 await signInWithEmailAndPassword(auth, email, password);
-                closeLogin();
                 loginForm.reset();
             } catch (error) {
                 errorText.innerText = "Incorrect Email or Password.";
@@ -114,12 +109,10 @@ function setupLoginLogic() {
 window.logoutApp = async function() {
     try {
         await signOut(auth);
-        closeAdmin(); // Close admin panel if it's open
     } catch (error) {
         alert("Error logging out.");
     }
 }
-
 
 // --- FETCH FROM CLOUD ---
 async function fetchProductsFromCloud() {
@@ -325,7 +318,7 @@ if(form) {
                         form.reset();
                         document.getElementById('file-upload-feedback').innerText = ''; 
                         await fetchProductsFromCloud();
-                        renderProducts();
+                        if(document.getElementById('product-grid')) renderProducts();
                         renderAdminInventory();
                         alert("Product saved globally to Cloud Database!");
                     } catch (error) {
@@ -364,7 +357,7 @@ function renderAdminInventory() {
     });
 }
 
-async function deleteProduct(id, name) {
+window.deleteProduct = async function(id, name) {
     if(confirm(`Are you sure you want to remove "${name}" from cloud storage?`)) {
         try {
             await deleteDoc(doc(db, "clothes", id));
