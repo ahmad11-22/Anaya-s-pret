@@ -12,7 +12,7 @@ window.changeMainImage = function(imgSrc, thumbElement) {
 
 // 3. FIREBASE CONFIGURATION (Fixed typo from Ds511 to DxS11)
 const firebaseConfig = {
-  apiKey: "AIzaSyDs511IYmXCZmlLYhHWn6AKfDrp6XANSFU", // <-- The original, correct key!
+  apiKey: "AIzaSyDs511IYmXCZmlLYhHWn6AKfDrp6XANSFU",
   authDomain: "anaya-s-pret.firebaseapp.com",
   projectId: "anaya-s-pret",
   storageBucket: "anaya-s-pret.firebasestorage.app",
