@@ -9,6 +9,18 @@ window.changeMainImage = function(imgSrc, thumbElement) {
     document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active-thumb'));
     thumbElement.classList.add('active-thumb');
 }
+window.setupMenu = function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const sideMenu = document.getElementById('side-menu');
+    const closeMenu = document.getElementById('close-menu');
+    
+    if(menuToggle && sideMenu) {
+        menuToggle.onclick = () => sideMenu.style.width = "280px";
+    }
+    if(closeMenu && sideMenu) {
+        closeMenu.onclick = () => sideMenu.style.width = "0";
+    }
+}
 
 // 3. FIREBASE CONFIGURATION (Fixed typo from Ds511 to DxS11)
 const firebaseConfig = {
@@ -30,18 +42,32 @@ let products = [];
 let currentFilter = 'All';
 
 // 4. START THE APP
+// 4. START THE APP
 async function startApp() {
     await fetchProductsFromCloud();
-    setupAuthListener(); // Start listening for logins
+    setupAuthListener(); 
+    setupMenu(); // Activates the hamburger menu
     
     if(document.getElementById('product-grid')) {
+        // MAGIC URL READER: Check if the link asked for a specific category
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlCategory = urlParams.get('category');
+        
+        if(urlCategory) {
+            currentFilter = urlCategory; // Force the filter to match the URL
+            const titleEl = document.getElementById('page-title');
+            if(titleEl) {
+                titleEl.innerText = urlCategory === 'All' ? 'Complete Collection' : urlCategory;
+            }
+        }
+        
         renderProducts();
         setupFilters();
     }
+    
     if(document.getElementById('product-detail-container')) {
         renderProductDetails();
     }
-    // Setup Admin Page specifically
     if(document.getElementById('admin-login-screen')) {
         setupLoginLogic();
         setupFileUploadFeedback();
