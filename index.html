@@ -10,27 +10,68 @@
 </head>
 <body>
 
+    <!-- Header with Hamburger Menu -->
     <header>
-        <a href="index.html" class="logo">Elegance</a>
-        <nav class="filters">
-            <button class="filter-btn active" data-filter="All">All Collection</button>
-            <button class="filter-btn" data-filter="New">New Arrivals</button>
-            <button class="filter-btn" data-filter="Preloved">Preloved</button>
-            <button class="filter-btn" data-filter="Bags">Bags</button>
-        </nav>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="menu-toggle" class="icon-btn" style="font-size: 22px;"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="logo">Elegance</a>
+        </div>
         <div class="header-actions"></div>
     </header>
 
+    <!-- The Hidden Sidebar Menu -->
+    <div id="side-menu" class="side-menu">
+        <button id="close-menu" class="close-btn">&times;</button>
+        <h3 style="padding: 0 30px; margin-bottom: 10px; font-family: 'Playfair Display', serif; color: #333;">Categories</h3>
+        <a href="collection.html?category=All">All Collection</a>
+        <a href="collection.html?category=New">New Arrivals</a>
+        <a href="collection.html?category=Preloved">Preloved</a>
+        <a href="collection.html?category=Bags">Bags</a>
+        
+        <hr style="margin: 20px 30px; border: 0; border-top: 1px solid #eee;">
+        <a href="admin.html" style="font-size: 14px; color: #888;"><i class="fas fa-lock"></i> Admin Gateway</a>
+    </div>
+
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <h1>Discover Your Signature Style</h1>
             <p>Curated new arrivals and sustainably sourced preloved fashion.</p>
-            <button class="shop-now-btn" onclick="document.getElementById('product-grid').scrollIntoView({behavior: 'smooth'})">Shop the Collection</button>
+            <button class="shop-now-btn" onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})">Explore Collections</button>
         </div>
     </section>
 
-    <main class="container">
-        <div id="product-grid" class="product-grid"></div>
+    <!-- Category Showcase Section -->
+    <main class="container" id="categories" style="padding: 60px 20px;">
+        <h2 style="text-align: center; font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 40px; color: #333;">Shop by Category</h2>
+        
+        <div class="category-grid">
+            
+            <!-- Category 1: New Arrivals -->
+            <a href="collection.html?category=New" class="category-card">
+                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800&auto=format&fit=crop" alt="New Arrivals">
+                <div class="category-overlay">
+                    <h3>New Arrivals</h3>
+                </div>
+            </a>
+
+            <!-- Category 2: Preloved -->
+            <a href="collection.html?category=Preloved" class="category-card">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800&auto=format&fit=crop" alt="Preloved">
+                <div class="category-overlay">
+                    <h3>Preloved</h3>
+                </div>
+            </a>
+
+            <!-- Category 3: Bags -->
+            <a href="collection.html?category=Bags" class="category-card">
+                <img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=800&auto=format&fit=crop" alt="Bags">
+                <div class="category-overlay">
+                    <h3>Bags</h3>
+                </div>
+            </a>
+
+        </div>
     </main>
 
     <footer>
