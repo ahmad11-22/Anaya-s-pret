@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Elegance</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Elegance</a>
+        <nav class="filters">
+            <a href="index.html" class="filter-btn" style="text-decoration:none;">&larr; Back to Store</a>
+        </nav>
+        <div class="header-actions">
+            <button class="icon-btn" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> Store
+            </button>
+        </div>
+    </header>
+
+    <main class="container" style="min-height: 70vh;">
+        <div id="product-detail-container" class="product-detail-layout">
+            <h2 style="text-align:center; margin-top:50px;">Loading product...</h2>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h2>Elegance</h2>
+            <p>Premium Women's Fashion & Preloved Boutique.</p>
+            <p>&copy; 2026 Elegance Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- NOTICE type="module" -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
