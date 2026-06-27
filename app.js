@@ -174,7 +174,7 @@ function renderProducts() {
         card.innerHTML = `
             <span class="badge">${product.category}</span>
             <div class="product-image-container" style="cursor:pointer;" onclick="window.location.href='product.html?id=${product.id}'">
-                <img src="${mainImg}" alt="${product.name}" class="product-image">
+                <img src="${mainImg}" alt="${product.name}" loading="lazy" class="product-image"> 
             </div>
             <div class="product-info">
                 <h3 class="product-name">${product.name}</h3>
