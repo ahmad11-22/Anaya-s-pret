@@ -41,12 +41,20 @@ header {
 }
 
 .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 600;
-    color: var(--primary);
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    letter-spacing: 1px;
+}
+
+.logo img {
+    height: 70px; /* This controls how tall the logo is in the navbar */
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05); /* Adds a tiny zoom effect when clicked */
 }
 
 .icon-btn {
